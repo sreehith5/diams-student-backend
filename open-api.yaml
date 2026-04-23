@@ -1,0 +1,492 @@
+openapi: 3.0.3
+info:
+  title: DIAMS Student Backend API
+  description: |
+    Digital Intelligent Attendance Management System — Student Backend.
+    Proxies between the iOS app and three external services:
+    - Soham's professor backend (MongoDB — source of truth for all data)
+    - Krishna's face recognition service (enroll/verify)
+    - Abhay's BLE microservice (beacon validation)
+    - AWS S3 (profile photo storage with presigned URLs)
+  version: 2.0.0
+
+servers:
+  - url: http://{ip}:3000
+    description: Local development
+    variables:
+      ip:
+        default: 192.168.0.134
+
+tags:
+  - name: Auth
+  - name: Student
+  - name: Professor
+  - name: BLE
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT from Soham's backend. Stored in iOS Keychain. Auto-refreshed on 401.
+
+  schemas:
+    User:
+      type: object
+      properties:
+        id:    { type: string, example: ES22BTECH11033 }
+        email: { type: string, example: es22btech11033@iith.ac.in }
+        name:  { type: string, example: Sreehith Sanam }
+        role:  { type: string, enum: [student, ta, prof, admin] }
+
+    CourseAnalytics:
+      type: object
+      properties:
+        code:       { type: string, example: CS3101 }
+        name:       { type: string, example: Data Structures & Algorithms }
+        room:       { type: string, example: LH-1 }
+        attended:   { type: integer, example: 27 }
+        total:      { type: integer, example: 50 }
+        percentage: { type: number, example: 54.0 }
+
+    ActiveSession:
+      type: object
+      properties:
+        sessionId:       { type: string, example: a392cff1-5f99-434a-a0b2-0e691671d0e2 }
+        courseCode:      { type: string, example: CS3101 }
+        courseName:      { type: string, example: Data Structures & Algorithms }
+        room:            { type: string, example: LH-1 }
+        mode:            { type: string, enum: [BLE, QRCode, Manual] }
+        startedAt:       { type: integer, description: Unix timestamp ms }
+        durationSeconds: { type: integer, example: 300 }
+
+    ProfessorSession:
+      type: object
+      properties:
+        id:              { type: string, example: a392cff1-5f99-434a-a0b2-0e691671d0e2 }
+        courseCode:      { type: string, example: CS3101 }
+        mode:            { type: string, enum: [BLE, QRCode, Manual] }
+        professorId:     { type: string, example: prof_arora }
+        startedAt:       { type: integer, description: Unix timestamp ms }
+        durationSeconds: { type: integer, example: 300 }
+
+    Beacon:
+      type: object
+      properties:
+        major: { type: string, example: "100" }
+        minor: { type: string, example: "6786" }
+        rssi:  { type: integer, example: -65 }
+
+    Error:
+      type: object
+      properties:
+        error: { type: string }
+
+security:
+  - bearerAuth: []
+
+paths:
+
+  # ─── AUTH ────────────────────────────────────────────────────────────────────
+
+  /api/auth/login:
+    post:
+      tags: [Auth]
+      summary: Login
+      description: |
+        Proxies to Soham's backend /login.
+        Accepts email or username (backward compat for Android app).
+        Returns JWT — store in Keychain, send as Bearer on all subsequent requests.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:    { type: string, example: es22btech11033@iith.ac.in }
+                username: { type: string, description: Alias for email }
+                password: { type: string, example: stud123 }
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  token:   { type: string, description: JWT — 12h expiry, store in Keychain }
+                  user:    { $ref: "#/components/schemas/User" }
+        "401":
+          description: Invalid credentials
+
+  # ─── STUDENT ─────────────────────────────────────────────────────────────────
+
+  /api/student/{studentId}/analytics:
+    get:
+      tags: [Student]
+      summary: Get attendance analytics
+      description: |
+        Fetches enrolled courses from Soham's /student/:id/courses,
+        then attendance history from /student/:id/history/:courseId for each.
+        Course names/rooms cached for 10 minutes.
+      parameters:
+        - name: studentId
+          in: path
+          required: true
+          schema: { type: string, example: ES22BTECH11033 }
+      responses:
+        "200":
+          description: Analytics per course
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  studentId: { type: string }
+                  courses:
+                    type: array
+                    items: { $ref: "#/components/schemas/CourseAnalytics" }
+
+  /api/student/{studentId}/sessions:
+    get:
+      tags: [Student]
+      summary: Get active sessions for student
+      description: |
+        Checks /activeSession?course_id= for each enrolled course in parallel.
+        Filters out sessions the student already marked (checks /attendance/:sessionId).
+        Polled every 30s by iOS app. Pull-to-refresh also available.
+      parameters:
+        - name: studentId
+          in: path
+          required: true
+          schema: { type: string, example: ES22BTECH11033 }
+      responses:
+        "200":
+          description: Active sessions not yet marked by this student
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sessions:
+                    type: array
+                    items: { $ref: "#/components/schemas/ActiveSession" }
+
+  /api/student/markAttendance:
+    post:
+      tags: [Student]
+      summary: Mark attendance
+      description: |
+        Called after BLE validation AND face verification both succeed.
+        Forwards to Soham's /markAttendance using the student's own JWT.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [studentId, sessionId]
+              properties:
+                studentId: { type: string, example: ES22BTECH11033 }
+                sessionId: { type: string, example: a392cff1-5f99-434a-a0b2-0e691671d0e2 }
+                method:    { type: string, enum: [BLE, QRCode, Manual], default: BLE }
+      responses:
+        "200":
+          description: Attendance marked
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+
+  /api/student/faceVerify:
+    post:
+      tags: [Student]
+      summary: Verify student face
+      description: |
+        Proxies 3 base64 frames to Krishna's /verify endpoint.
+        user_id sent as email prefix (es22btech11033) to match enrollment.
+        Falls back to mock {status: "verified"} if Krishna's service is unreachable.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [userId, frames]
+              properties:
+                userId:     { type: string, example: ES22BTECH11033 }
+                frames:     { type: array, items: { type: string }, description: 3 base64 JPEG strings from liveness detection }
+                challenges: { type: array, items: { type: string } }
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: { type: string, enum: [verified, failed, no_face] }
+
+  /api/student/{studentId}/photoStatus:
+    get:
+      tags: [Student]
+      summary: Get face photo enrollment status
+      description: |
+        Fetches imageURL from Soham's /student/:id/profile.
+        If imageURL is a DiceBear avatar → not enrolled.
+        If enrolled, fetches S3 HeadObject for LastModified (6-month expiry check)
+        and generates a presigned URL (1hr validity).
+      parameters:
+        - name: studentId
+          in: path
+          required: true
+          schema: { type: string, example: ES22BTECH11033 }
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  enrolled:     { type: boolean }
+                  enrolledAt:   { type: integer, description: Unix ms from S3 LastModified }
+                  photoUrl:     { type: string, description: S3 presigned URL, valid 1hr }
+                  isExpired:    { type: boolean, description: True if > 6 months since upload }
+                  mustUpdateBy: { type: integer, description: Unix ms — 6 months after upload }
+
+  /api/student/{studentId}/updatePhoto:
+    post:
+      tags: [Student]
+      summary: Enroll or update face photo
+      description: |
+        1. Sends frames to Krishna's /enroll (user_id = email prefix)
+        2. On success, uploads first frame to S3 with random UUID key (photos/<uuid>.jpg)
+        3. Calls PATCH /student/:id/photo on Soham's backend with student's JWT to store URL
+        No cooldown — student can update anytime. 6-month renewal enforced via photoStatus.
+      parameters:
+        - name: studentId
+          in: path
+          required: true
+          schema: { type: string, example: ES22BTECH11033 }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [frames]
+              properties:
+                frames: { type: array, items: { type: string }, description: Base64 JPEG strings }
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:   { type: string, enum: [uploaded, no_face, failed] }
+                  imageURL: { type: string, description: Public S3 URL stored in Soham's DB }
+
+  # ─── PROFESSOR ───────────────────────────────────────────────────────────────
+
+  /api/professor/{professorId}/courses:
+    get:
+      tags: [Professor]
+      summary: Get professor's courses
+      description: Proxies to Soham's /courses/:professorId.
+      parameters:
+        - name: professorId
+          in: path
+          required: true
+          schema: { type: string, example: prof_arora }
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  courses:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        _id:   { type: string, example: CS3101 }
+                        name:  { type: string, example: Data Structures & Algorithms }
+                        venue: { type: string, example: LH-1 }
+                        slot:  { type: string, example: A }
+
+  /api/professor/{professorId}/activeSession:
+    get:
+      tags: [Professor]
+      summary: Get professor's active session
+      description: Checks all professor courses for an active session on Soham's backend.
+      parameters:
+        - name: professorId
+          in: path
+          required: true
+          schema: { type: string, example: prof_arora }
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  session:
+                    nullable: true
+                    allOf:
+                      - $ref: "#/components/schemas/ProfessorSession"
+
+  /api/professor/session/start:
+    post:
+      tags: [Professor]
+      summary: Start an attendance session
+      description: |
+        Forwards to Soham's /startSession using the professor's own JWT (from Authorization header).
+        Mode must be uppercase: BLE, QRCode, or Manual.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [courseCode, mode]
+              properties:
+                courseCode: { type: string, example: CS3101 }
+                mode:       { type: string, enum: [BLE, QRCode, Manual] }
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  session: { $ref: "#/components/schemas/ProfessorSession" }
+        "400":
+          description: Active session already exists for this lecture
+
+  /api/professor/session/end/{sessionId}:
+    post:
+      tags: [Professor]
+      summary: End an attendance session
+      description: Forwards to Soham's /endSession/:sessionId using professor's JWT.
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Session ended
+
+  /api/professor/session/{sessionId}/summary:
+    get:
+      tags: [Professor]
+      summary: Get session attendance summary
+      description: Proxies to Soham's /attendance/:sessionId, returns enrolled/marked counts.
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Session summary
+
+  /api/professor/{professorId}/course/{courseCode}/attendance:
+    get:
+      tags: [Professor]
+      summary: Get per-student attendance for a course
+      description: Proxies to Soham's /analytics/course/:courseCode/students.
+      parameters:
+        - name: professorId
+          in: path
+          required: true
+          schema: { type: string }
+        - name: courseCode
+          in: path
+          required: true
+          schema: { type: string, example: CS3101 }
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  courseCode: { type: string }
+                  students:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        studentId:  { type: string }
+                        name:       { type: string }
+                        attended:   { type: integer }
+                        total:      { type: integer }
+                        percentage: { type: number }
+
+  # ─── BLE ─────────────────────────────────────────────────────────────────────
+
+  /api/ble/major/{classroom}:
+    get:
+      tags: [BLE]
+      summary: Get beacon major for a classroom
+      description: |
+        Returns the BLE beacon major for a classroom from our classroomMajors mapping.
+        iOS uses this to filter scanned beacons before validation.
+        Currently: LH-1→100, LH-2→101, LH-7→102, LH-12→103.
+      security: []
+      parameters:
+        - name: classroom
+          in: path
+          required: true
+          schema: { type: string, example: LH-1 }
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  classroom: { type: string, example: LH-1 }
+                  major:     { type: string, example: "100" }
+        "404":
+          description: No beacon registered for this classroom
+
+  /api/ble/validate:
+    post:
+      tags: [BLE]
+      summary: Validate BLE beacon
+      description: |
+        Proxies directly to Abhay's BLE microservice POST /ble/validate.
+        iOS sends top 4 beacons by RSSI, deduplicated by minor (unique physical beacons only).
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [class_id, beacons]
+              properties:
+                class_id: { type: string, example: LH-1 }
+                beacons:
+                  type: array
+                  maxItems: 4
+                  items: { $ref: "#/components/schemas/Beacon" }
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  valid: { type: boolean }
