@@ -6,13 +6,65 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		5818CFDF2F96CE13004D4C53 /* LivenessManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5818CFDE2F96CE13004D4C53 /* LivenessManager.swift */; };
+		5818CFE32F9734BF004D4C53 /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5818CFE22F9734BF004D4C53 /* KeychainHelper.swift */; };
+		5818CFE52F996D89004D4C53 /* SimpleCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5818CFE42F996D89004D4C53 /* SimpleCameraView.swift */; };
+		589D021A2F738EE500EB5F25 /* ActiveSessionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589D02082F738EE500EB5F25 /* ActiveSessionsView.swift */; };
+		589D021B2F738EE500EB5F25 /* AttendanceAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589D020A2F738EE500EB5F25 /* AttendanceAppApp.swift */; };
+		589D021C2F738EE500EB5F25 /* BLEScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589D020B2F738EE500EB5F25 /* BLEScannerView.swift */; };
+		589D021D2F738EE500EB5F25 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589D020C2F738EE500EB5F25 /* ContentView.swift */; };
+		589D021E2F738EE500EB5F25 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589D020D2F738EE500EB5F25 /* DashboardView.swift */; };
+		589D021F2F738EE500EB5F25 /* FaceCaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589D020E2F738EE500EB5F25 /* FaceCaptureView.swift */; };
+		589D02202F738EE500EB5F25 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589D020F2F738EE500EB5F25 /* Helpers.swift */; };
+		589D02212F738EE500EB5F25 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589D02122F738EE500EB5F25 /* LoginView.swift */; };
+		589D02222F738EE500EB5F25 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589D02132F738EE500EB5F25 /* MainTabView.swift */; };
+		589D02232F738EE500EB5F25 /* ProfessorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589D02142F738EE500EB5F25 /* ProfessorView.swift */; };
+		589D02242F738EE500EB5F25 /* QRScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589D02152F738EE500EB5F25 /* QRScannerView.swift */; };
+		589D02252F738EE500EB5F25 /* RoleSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589D02162F738EE500EB5F25 /* RoleSelectionView.swift */; };
+		589D02272F79B89600EB5F25 /* AdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589D02262F79B89600EB5F25 /* AdminView.swift */; };
+		589D02292F7B101A00EB5F25 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589D02282F7B101A00EB5F25 /* AppState.swift */; };
+		589D02332F8CF16700EB5F25 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589D02322F8CF16700EB5F25 /* APIClient.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
+		5818CFDE2F96CE13004D4C53 /* LivenessManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LivenessManager.swift; sourceTree = "<group>"; };
+		5818CFE22F9734BF004D4C53 /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
+		5818CFE42F996D89004D4C53 /* SimpleCameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleCameraView.swift; sourceTree = "<group>"; };
+		589D02082F738EE500EB5F25 /* ActiveSessionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveSessionsView.swift; sourceTree = "<group>"; };
+		589D020A2F738EE500EB5F25 /* AttendanceAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendanceAppApp.swift; sourceTree = "<group>"; };
+		589D020B2F738EE500EB5F25 /* BLEScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEScannerView.swift; sourceTree = "<group>"; };
+		589D020C2F738EE500EB5F25 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		589D020D2F738EE500EB5F25 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		589D020E2F738EE500EB5F25 /* FaceCaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceCaptureView.swift; sourceTree = "<group>"; };
+		589D020F2F738EE500EB5F25 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		589D02122F738EE500EB5F25 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		589D02132F738EE500EB5F25 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		589D02142F738EE500EB5F25 /* ProfessorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfessorView.swift; sourceTree = "<group>"; };
+		589D02152F738EE500EB5F25 /* QRScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScannerView.swift; sourceTree = "<group>"; };
+		589D02162F738EE500EB5F25 /* RoleSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoleSelectionView.swift; sourceTree = "<group>"; };
+		589D02262F79B89600EB5F25 /* AdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminView.swift; sourceTree = "<group>"; };
+		589D02282F7B101A00EB5F25 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		589D02322F8CF16700EB5F25 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		58D960782F68BEAC00072149 /* AttendanceApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AttendanceApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		58D960992F68EBC300072149 /* Exceptions for "AttendanceApp" folder in "AttendanceApp" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 58D960772F68BEAC00072149 /* AttendanceApp */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		58D9607A2F68BEAC00072149 /* AttendanceApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				58D960992F68EBC300072149 /* Exceptions for "AttendanceApp" folder in "AttendanceApp" target */,
+			);
 			path = AttendanceApp;
 			sourceTree = "<group>";
 		};
@@ -29,11 +81,77 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		589D022B2F84E53000EB5F25 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				589D020A2F738EE500EB5F25 /* AttendanceAppApp.swift */,
+				589D02282F7B101A00EB5F25 /* AppState.swift */,
+				589D020C2F738EE500EB5F25 /* ContentView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		589D022D2F84E56500EB5F25 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				589D02162F738EE500EB5F25 /* RoleSelectionView.swift */,
+				589D02122F738EE500EB5F25 /* LoginView.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		589D022E2F84E56A00EB5F25 /* Student */ = {
+			isa = PBXGroup;
+			children = (
+				5818CFDE2F96CE13004D4C53 /* LivenessManager.swift */,
+				589D020D2F738EE500EB5F25 /* DashboardView.swift */,
+				589D020B2F738EE500EB5F25 /* BLEScannerView.swift */,
+				589D020E2F738EE500EB5F25 /* FaceCaptureView.swift */,
+				589D02152F738EE500EB5F25 /* QRScannerView.swift */,
+				589D02082F738EE500EB5F25 /* ActiveSessionsView.swift */,
+			);
+			path = Student;
+			sourceTree = "<group>";
+		};
+		589D022F2F84E57000EB5F25 /* Professor */ = {
+			isa = PBXGroup;
+			children = (
+				589D02142F738EE500EB5F25 /* ProfessorView.swift */,
+			);
+			path = Professor;
+			sourceTree = "<group>";
+		};
+		589D02302F84E57600EB5F25 /* Admin */ = {
+			isa = PBXGroup;
+			children = (
+				589D02262F79B89600EB5F25 /* AdminView.swift */,
+			);
+			path = Admin;
+			sourceTree = "<group>";
+		};
+		589D02312F84E57B00EB5F25 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				5818CFE42F996D89004D4C53 /* SimpleCameraView.swift */,
+				5818CFE22F9734BF004D4C53 /* KeychainHelper.swift */,
+				589D02322F8CF16700EB5F25 /* APIClient.swift */,
+				589D02132F738EE500EB5F25 /* MainTabView.swift */,
+				589D020F2F738EE500EB5F25 /* Helpers.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
 		58D9606F2F68BEAC00072149 = {
 			isa = PBXGroup;
 			children = (
+				589D02312F84E57B00EB5F25 /* Shared */,
+				589D022B2F84E53000EB5F25 /* App */,
+				589D022D2F84E56500EB5F25 /* Auth */,
 				58D9607A2F68BEAC00072149 /* AttendanceApp */,
 				58D960792F68BEAC00072149 /* Products */,
+				589D022E2F84E56A00EB5F25 /* Student */,
+				589D02302F84E57600EB5F25 /* Admin */,
+				589D022F2F84E57000EB5F25 /* Professor */,
 			);
 			sourceTree = "<group>";
 		};
@@ -119,6 +237,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				589D021A2F738EE500EB5F25 /* ActiveSessionsView.swift in Sources */,
+				589D021B2F738EE500EB5F25 /* AttendanceAppApp.swift in Sources */,
+				589D021C2F738EE500EB5F25 /* BLEScannerView.swift in Sources */,
+				589D021D2F738EE500EB5F25 /* ContentView.swift in Sources */,
+				5818CFDF2F96CE13004D4C53 /* LivenessManager.swift in Sources */,
+				589D021E2F738EE500EB5F25 /* DashboardView.swift in Sources */,
+				589D021F2F738EE500EB5F25 /* FaceCaptureView.swift in Sources */,
+				5818CFE52F996D89004D4C53 /* SimpleCameraView.swift in Sources */,
+				589D02202F738EE500EB5F25 /* Helpers.swift in Sources */,
+				589D02212F738EE500EB5F25 /* LoginView.swift in Sources */,
+				589D02332F8CF16700EB5F25 /* APIClient.swift in Sources */,
+				589D02272F79B89600EB5F25 /* AdminView.swift in Sources */,
+				589D02292F7B101A00EB5F25 /* AppState.swift in Sources */,
+				589D02222F738EE500EB5F25 /* MainTabView.swift in Sources */,
+				5818CFE32F9734BF004D4C53 /* KeychainHelper.swift in Sources */,
+				589D02232F738EE500EB5F25 /* ProfessorView.swift in Sources */,
+				589D02242F738EE500EB5F25 /* QRScannerView.swift in Sources */,
+				589D02252F738EE500EB5F25 /* RoleSelectionView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -246,10 +382,12 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = MX7LP765TP;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = AttendanceApp/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -270,13 +408,14 @@
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				XROS_DEPLOYMENT_TARGET = 26.2;
 			};
 			name = Debug;
@@ -288,10 +427,12 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = MX7LP765TP;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = AttendanceApp/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -312,13 +453,14 @@
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				XROS_DEPLOYMENT_TARGET = 26.2;
 			};
 			name = Release;
