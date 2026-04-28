@@ -105,4 +105,64 @@ const getCourseAttendance = async (req, res) => {
   }
 };
 
-module.exports = { getCourses, getActiveSession, startSession, endSession, getSessionSummary, getCourseAttendance };
+// POST /api/professor/session/:sessionId/manualAttendance
+// body: { studentIds: [] }
+const manualAttendance = async (req, res) => {
+  const { sessionId } = req.params;
+  const { studentIds } = req.body;
+  if (!Array.isArray(studentIds) || studentIds.length === 0)
+    return res.status(400).json({ error: "studentIds array required" });
+  const userToken = (req.headers.authorization || "").replace("Bearer ", "") || null;
+  try {
+    const data = await profFetch("/manualAttendance/bulk", {
+      method: "POST",
+      body: JSON.stringify({ session_id: sessionId, student_ids: studentIds }),
+    }, userToken);
+    return res.json(data);
+  } catch (err) {
+    return res.status(502).json({ error: "Upstream error", detail: err.message });
+  }
+};
+
+// POST /api/professor/:courseId/schedule
+const addSchedule = async (req, res) => {
+  const userToken = (req.headers.authorization || "").replace("Bearer ", "") || null;
+  try {
+    const data = await profFetch(`/courses/${req.params.courseId}/schedule`, {
+      method: "POST",
+      body: JSON.stringify(req.body),
+    }, userToken);
+    return res.json(data);
+  } catch (err) {
+    return res.status(502).json({ error: "Upstream error", detail: err.message });
+  }
+};
+
+// PATCH /api/professor/:courseId/schedule/:scheduleId
+const updateSchedule = async (req, res) => {
+  const userToken = (req.headers.authorization || "").replace("Bearer ", "") || null;
+  try {
+    const data = await profFetch(`/courses/${req.params.courseId}/schedule/${req.params.scheduleId}`, {
+      method: "PATCH",
+      body: JSON.stringify(req.body),
+    }, userToken);
+    return res.json(data);
+  } catch (err) {
+    return res.status(502).json({ error: "Upstream error", detail: err.message });
+  }
+};
+
+// DELETE /api/professor/:courseId/schedule/:scheduleId
+const deleteSchedule = async (req, res) => {
+  const userToken = (req.headers.authorization || "").replace("Bearer ", "") || null;
+  try {
+    const data = await profFetch(`/courses/${req.params.courseId}/schedule/${req.params.scheduleId}`, {
+      method: "DELETE",
+    }, userToken);
+    return res.json(data);
+  } catch (err) {
+    return res.status(502).json({ error: "Upstream error", detail: err.message });
+  }
+};
+
+module.exports = { getCourses, getActiveSession, startSession, endSession, getSessionSummary, getCourseAttendance, manualAttendance, addSchedule, updateSchedule, deleteSchedule };

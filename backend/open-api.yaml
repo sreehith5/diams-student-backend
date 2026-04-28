@@ -420,6 +420,86 @@ paths:
                         total:      { type: integer }
                         percentage: { type: number }
 
+  /api/professor/session/{sessionId}/manualAttendance:
+    post:
+      tags: [Professor]
+      summary: Manually mark attendance for a list of students
+      description: |
+        Proxies to Soham's POST /manualAttendance/bulk using professor's JWT.
+        Used by professor to directly mark students present without BLE/QR verification.
+      parameters:
+        - { name: sessionId, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [studentIds]
+              properties:
+                studentIds:
+                  type: array
+                  items: { type: string }
+                  example: ["CS22B0001", "CS22B0002"]
+      responses:
+        "200":
+          description: Attendance marked for all provided students
+
+  /api/professor/{courseId}/schedule:
+    post:
+      tags: [Professor]
+      summary: Add a schedule entry to a course
+      description: Proxies to Soham's POST /courses/:courseId/schedule using professor's JWT.
+      parameters:
+        - { name: courseId, in: path, required: true, schema: { type: string, example: CS3101 } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                scheduledDay: { type: string, example: Monday }
+                startTime:    { type: string, example: "09:00" }
+                endTime:      { type: string, example: "09:55" }
+                method:       { type: string, enum: [BLE, QRCode, Manual] }
+      responses:
+        "200":
+          description: Schedule entry created
+
+  /api/professor/{courseId}/schedule/{scheduleId}:
+    patch:
+      tags: [Professor]
+      summary: Update a schedule entry
+      description: Proxies to Soham's PATCH /courses/:courseId/schedule/:scheduleId using professor's JWT.
+      parameters:
+        - { name: courseId, in: path, required: true, schema: { type: string } }
+        - { name: scheduleId, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                scheduledDay: { type: string }
+                startTime:    { type: string }
+                endTime:      { type: string }
+                method:       { type: string }
+      responses:
+        "200":
+          description: Schedule entry updated
+    delete:
+      tags: [Professor]
+      summary: Delete a schedule entry
+      description: Proxies to Soham's DELETE /courses/:courseId/schedule/:scheduleId using professor's JWT.
+      parameters:
+        - { name: courseId, in: path, required: true, schema: { type: string } }
+        - { name: scheduleId, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Schedule entry deleted
+
   # ─── BLE ───────────────────────────────────────────────────────────────────
 
   /api/ble/major/{classroom}:
@@ -486,6 +566,7 @@ paths:
         Proxies to Abhay's /qr/generate.
         Professor screen calls this every 5 seconds and renders the hash as a QR image.
         QR encodes "class_id|hash" so student app can extract both.
+        class_id is the course code (e.g. CS3101), NOT the venue/room.
       requestBody:
         required: true
         content:
@@ -494,7 +575,7 @@ paths:
               type: object
               required: [class_id]
               properties:
-                class_id: { type: string, example: LH-1 }
+                class_id: { type: string, example: CS3101, description: Course code, not room/venue }
       responses:
         "200":
           content:
@@ -512,6 +593,7 @@ paths:
       description: |
         Proxies to Abhay's /qr/validate.
         Student scans QR → app decodes "class_id|hash" → sends here with current timestamp (ms).
+        class_id must be the course code (e.g. CS3101) — same value used during generation.
         Abhay validates hash freshness (15s window) and returns valid/invalid.
       requestBody:
         required: true
@@ -521,7 +603,7 @@ paths:
               type: object
               required: [class_id, hash, timestamp]
               properties:
-                class_id:  { type: string, example: LH-1 }
+                class_id:  { type: string, example: CS3101, description: Course code, not room/venue }
                 hash:      { type: string, example: a1b2c3d4 }
                 timestamp: { type: integer, description: Current Unix timestamp in milliseconds }
       responses:
