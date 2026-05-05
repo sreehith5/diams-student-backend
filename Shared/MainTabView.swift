@@ -65,7 +65,7 @@ struct ProfileSheet: View {
             Divider().padding(.horizontal)
 
             // Update Photo section (students only)
-            if appState.user?.role == "student" {
+            if appState.user?.role.lowercased() == "student" {
                 VStack(spacing: 8) {
                     Text("Face Photo").font(.headline).frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.horizontal, 28)

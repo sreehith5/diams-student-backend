@@ -97,6 +97,14 @@ struct LoginView: View {
                     isLoading = false
                     return
                 }
+                // Validate that the returned role matches what was selected
+                let returnedRole = user.role.lowercased()
+                let expectedRole = selectedRole == .professor ? "professor" : "student"
+                if returnedRole != expectedRole && returnedRole != "admin" {
+                    errorMessage = "These credentials belong to a \(returnedRole) account."
+                    isLoading = false
+                    return
+                }
                 appState.saveSession(user: user, token: token, email: email, password: password)
                 KeychainHelper.savedRole = selectedRole == .professor ? "professor" : "student"
                 role = selectedRole
