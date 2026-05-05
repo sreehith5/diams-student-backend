@@ -24,7 +24,6 @@ struct LoginView: View {
         switch selectedRole {
         case .student:   return "Student"
         case .professor: return "Professor"
-        case .admin:     return "Admin"
         }
     }
 
@@ -99,7 +98,7 @@ struct LoginView: View {
                     return
                 }
                 appState.saveSession(user: user, token: token, email: email, password: password)
-                KeychainHelper.savedRole = selectedRole == .professor ? "professor" : selectedRole == .admin ? "admin" : "student"
+                KeychainHelper.savedRole = selectedRole == .professor ? "professor" : "student"
                 role = selectedRole
                 isLoggedIn = true
             } catch {

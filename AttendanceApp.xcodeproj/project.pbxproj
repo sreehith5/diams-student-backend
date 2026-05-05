@@ -10,6 +10,10 @@
 		5818CFDF2F96CE13004D4C53 /* LivenessManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5818CFDE2F96CE13004D4C53 /* LivenessManager.swift */; };
 		5818CFE32F9734BF004D4C53 /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5818CFE22F9734BF004D4C53 /* KeychainHelper.swift */; };
 		5818CFE52F996D89004D4C53 /* SimpleCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5818CFE42F996D89004D4C53 /* SimpleCameraView.swift */; };
+		5853D5202FA36BE000506536 /* ProfessorModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5853D51D2FA36BE000506536 /* ProfessorModels.swift */; };
+		5853D5212FA36BE000506536 /* ProfessorSessionViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5853D51F2FA36BE000506536 /* ProfessorSessionViews.swift */; };
+		5853D5222FA36BE000506536 /* ProfessorScheduleViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5853D51E2FA36BE000506536 /* ProfessorScheduleViews.swift */; };
+		5853D5232FA36BE000506536 /* ProfessorAnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5853D51C2FA36BE000506536 /* ProfessorAnalyticsView.swift */; };
 		589D021A2F738EE500EB5F25 /* ActiveSessionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589D02082F738EE500EB5F25 /* ActiveSessionsView.swift */; };
 		589D021B2F738EE500EB5F25 /* AttendanceAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589D020A2F738EE500EB5F25 /* AttendanceAppApp.swift */; };
 		589D021C2F738EE500EB5F25 /* BLEScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589D020B2F738EE500EB5F25 /* BLEScannerView.swift */; };
@@ -31,6 +35,10 @@
 		5818CFDE2F96CE13004D4C53 /* LivenessManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LivenessManager.swift; sourceTree = "<group>"; };
 		5818CFE22F9734BF004D4C53 /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
 		5818CFE42F996D89004D4C53 /* SimpleCameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleCameraView.swift; sourceTree = "<group>"; };
+		5853D51C2FA36BE000506536 /* ProfessorAnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfessorAnalyticsView.swift; sourceTree = "<group>"; };
+		5853D51D2FA36BE000506536 /* ProfessorModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfessorModels.swift; sourceTree = "<group>"; };
+		5853D51E2FA36BE000506536 /* ProfessorScheduleViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfessorScheduleViews.swift; sourceTree = "<group>"; };
+		5853D51F2FA36BE000506536 /* ProfessorSessionViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfessorSessionViews.swift; sourceTree = "<group>"; };
 		589D02082F738EE500EB5F25 /* ActiveSessionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveSessionsView.swift; sourceTree = "<group>"; };
 		589D020A2F738EE500EB5F25 /* AttendanceAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendanceAppApp.swift; sourceTree = "<group>"; };
 		589D020B2F738EE500EB5F25 /* BLEScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEScannerView.swift; sourceTree = "<group>"; };
@@ -116,6 +124,10 @@
 		589D022F2F84E57000EB5F25 /* Professor */ = {
 			isa = PBXGroup;
 			children = (
+				5853D51C2FA36BE000506536 /* ProfessorAnalyticsView.swift */,
+				5853D51D2FA36BE000506536 /* ProfessorModels.swift */,
+				5853D51E2FA36BE000506536 /* ProfessorScheduleViews.swift */,
+				5853D51F2FA36BE000506536 /* ProfessorSessionViews.swift */,
 				589D02142F738EE500EB5F25 /* ProfessorView.swift */,
 			);
 			path = Professor;
@@ -247,6 +259,10 @@
 				5818CFE52F996D89004D4C53 /* SimpleCameraView.swift in Sources */,
 				589D02202F738EE500EB5F25 /* Helpers.swift in Sources */,
 				589D02212F738EE500EB5F25 /* LoginView.swift in Sources */,
+				5853D5202FA36BE000506536 /* ProfessorModels.swift in Sources */,
+				5853D5212FA36BE000506536 /* ProfessorSessionViews.swift in Sources */,
+				5853D5222FA36BE000506536 /* ProfessorScheduleViews.swift in Sources */,
+				5853D5232FA36BE000506536 /* ProfessorAnalyticsView.swift in Sources */,
 				589D02332F8CF16700EB5F25 /* APIClient.swift in Sources */,
 				589D02272F79B89600EB5F25 /* AdminView.swift in Sources */,
 				589D02292F7B101A00EB5F25 /* AppState.swift in Sources */,
