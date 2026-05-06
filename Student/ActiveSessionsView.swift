@@ -263,7 +263,7 @@ struct MarkAttendanceFlow: View {
             struct MarkResponse: Decodable { let success: Bool }
             let _: MarkResponse = try await APIClient.post(
                 "/api/student/markAttendance",
-                body: ["studentId": appState.userId, "sessionId": sessionId]
+                body: ["studentId": appState.userId, "sessionId": sessionId, "method": mode == .qr ? "QR" : "BLE"]
             )
             expiryTimer?.invalidate()  // prevent expiry screen from overriding success
         } catch {
